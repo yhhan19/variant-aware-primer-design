@@ -4,6 +4,7 @@ RiskOptimizer::RiskOptimizer(std::vector<risk_t> input, index_t len, index_t min
     size = input.size();
     risk = new risk_t[size];
     prefix_sum = new risk_t[size + 1];
+    exclude = new bool[size];
     prefix_sum[0] = 0;
     for (index_t i = 0; i < input.size(); i ++) {
         risk[i] = input[i];
@@ -12,6 +13,18 @@ RiskOptimizer::RiskOptimizer(std::vector<risk_t> input, index_t len, index_t min
     this->len = len;
     this->min = min;
     this->max = max;
+    std::vector<std::pair<index_t, risk_t>> c;
+    for (index_t i = 0; i < input.size(); i ++) {
+        if (i + len >= size) continue;
+        c.push_back(std::make_pair(i, cost(i, 0, 0)));
+        exclude[i] = true;
+    }
+    std::sort(c.begin(), c.end(), [](const std::pair<index_t, risk_t> &a, const std::pair<index_t, risk_t> &b) {
+        return a.second < b.second;
+    });
+    for (index_t i = 0; i < input.size() / 10 * 8; i ++) {
+        exclude[c[i].first] = false;
+    }
 }
 
 risk_t RiskOptimizer::cost(index_t p, risk_t u, risk_t alpha) {
@@ -24,6 +37,7 @@ risk_t RiskOptimizer::cost(index_t p, risk_t u, risk_t alpha) {
 RiskOptimizer::~RiskOptimizer() {
     delete [] risk;
     delete [] prefix_sum;
+    delete [] exclude;
 }
 
 std::vector<index_t> RiskOptimizer::random_PDR() {
@@ -73,7 +87,7 @@ std::vector<index_t> RiskOptimizer::random_search(std::size_t limit) {
         if (min < 0 || temp < min) {
             min = temp;
             min_PDR = PDR;
-            std::cout << "iteration: " << i << ", updated goal: " << min << std::endl;
+            std::cout << "iteration: " << i << ", updated: " << min << std::endl;
         }
     }
     return min_PDR;
@@ -142,6 +156,7 @@ risk_t RiskOptimizer::score(std::vector<index_t> PDR, risk_t alpha) {
 }
 
 risk_t RiskOptimizer::opt(index_t f, index_t r, index_t f_, index_t r_, risk_t u, risk_t alpha) {
+    if (exclude[f] || exclude[r] || exclude[f_] || exclude[r_]) return INF; 
     if (r < r_ + len || r_ < f + len || f < f_ + len) return INF;
     key_t k = to_key(f, r, f_, r_);
     if (memo.find(k) == memo.end()) {
@@ -214,7 +229,7 @@ std::vector<index_t> RiskOptimizer::search(risk_t lower, risk_t upper, risk_t ep
     while (r - l > eps) {
         risk_t u = (l + r) / 2;
         risk_t temp = top_k_opt(u, min_PDR, alpha), grad = alpha * min_PDR.size();
-        std::cout << "parameter: " << u << ", relaxed goal: " << temp << std::endl;
+        std::cout << "parameter: " << u << ", relaxed: " << temp << std::endl;
         for (index_t i = 0; i < min_PDR.size(); i ++) 
             if (u < cost(min_PDR[i], 0, 0)) grad --;
         *(&(grad < 0 ? l : r)) = u;

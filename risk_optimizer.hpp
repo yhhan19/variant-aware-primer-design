@@ -16,6 +16,7 @@ class RiskOptimizer {
         std::unordered_map<key_t, key_t> prev;
         index_t size, len, min, max;
         risk_t *risk, *prefix_sum;
+        bool *exclude;
         std::vector<index_t> random_PDR();
         index_t greedy_random_between(index_t cmin, index_t cmax);
         risk_t opt(index_t f, index_t r, index_t pf, index_t pr, risk_t u, risk_t alpha);

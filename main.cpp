@@ -4,15 +4,15 @@
 int main(int argc, char **argv) {
     
     srand(time(0));
-    auto input = random_risk(8500);
-    read_rate(argv[1], input);
+    auto input = random_risk(10000);
+    // read_rate(argv[1], input);
     index_t len_amp = std::stod(argv[2]);
     std::chrono::high_resolution_clock::time_point t1, t2;
 
     std::cout << "DP-based relaxed convex optimizer" << std::endl;
     t1 = std::chrono::high_resolution_clock::now();
     RiskOptimizer ro(input, 40, len_amp, len_amp);
-    auto PDR = ro.search(0, 10000, 1);
+    auto PDR = ro.search(0, 20000, 5);
     ro.validate_PDR(PDR);
     risk_t score = ro.score(PDR, ALPHA);
     t2 = std::chrono::high_resolution_clock::now();

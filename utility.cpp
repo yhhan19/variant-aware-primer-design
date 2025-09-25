@@ -3,7 +3,7 @@
 std::vector<risk_t> random_risk(std::size_t size) {
     std::vector<risk_t> input;
     for (std::size_t i = 0; i < size; i ++) 
-        input.push_back((float)(rand()) / (float)(RAND_MAX));
+        input.push_back(5 * (float)(rand()) / (float)(RAND_MAX));
     return input;
 }
 
