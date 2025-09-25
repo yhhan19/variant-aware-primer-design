@@ -1,0 +1,36 @@
+#include "utility.hpp"
+#include "risk_optimizer.hpp"
+
+int main(int argc, char **argv) {
+    
+    srand(time(0));
+    auto input = random_risk(8500);
+    read_rate(argv[1], input);
+    index_t len_amp = std::stod(argv[2]);
+    std::chrono::high_resolution_clock::time_point t1, t2;
+
+    std::cout << "DP-based relaxed convex optimizer" << std::endl;
+    t1 = std::chrono::high_resolution_clock::now();
+    RiskOptimizer ro(input, 40, len_amp, len_amp);
+    auto PDR = ro.search(0, 10000, 1);
+    ro.validate_PDR(PDR);
+    risk_t score = ro.score(PDR, ALPHA);
+    t2 = std::chrono::high_resolution_clock::now();
+    auto time = std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
+    std::cout << "score: " << score << ", time: " << time << " secs" << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "Olivar greedy random optimizer" << std::endl;
+    t1 = std::chrono::high_resolution_clock::now();
+    RiskOptimizer ro_(input, 40, len_amp / 10 * 9, len_amp);
+    auto PDR_ = ro_.random_search(ITER_LIMIT * input.size() / len_amp);
+    ro_.validate_PDR(PDR_);
+    risk_t score_ = ro_.score(PDR_, ALPHA);
+    t2 = std::chrono::high_resolution_clock::now();
+    auto time_ = std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
+    std::cout << "score: " << score_ << ", time: " << time_ << " secs" << std::endl;
+    std::cout << std::endl;
+    
+    std::cout << (int) ((score_ - score) / score_ * 100) << "%" << std::endl;
+    return 0;
+}
