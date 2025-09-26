@@ -14,6 +14,8 @@ class RiskOptimizer {
     private:
         std::unordered_map<key_t, risk_t> memo;
         std::unordered_map<key_t, key_t> prev;
+        risk_t *memo_2;
+        key_t *prev_2;
         index_t size, len, min, max;
         risk_t *risk, *prefix_sum;
         bool *exclude;
@@ -22,6 +24,8 @@ class RiskOptimizer {
         risk_t opt(index_t f, index_t r, index_t pf, index_t pr, risk_t u, risk_t alpha);
         risk_t cost(index_t p, risk_t u, risk_t alpha);
         risk_t top_k_opt(risk_t u, std::vector<index_t> &min_PDR, risk_t alpha);
+        risk_t opt_2(index_t r, index_t r_, risk_t u, risk_t alpha);
+        risk_t top_k_opt_2(risk_t u, std::vector<index_t> &min_PDR, risk_t alpha);
 };
 
 #endif
