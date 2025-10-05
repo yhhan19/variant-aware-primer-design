@@ -2,12 +2,12 @@
 #include "risk_optimizer.hpp"
 
 int main(int argc, char **argv) {
-    
+
     auto seed = time(0);
     srand(seed);
-    auto input = random_risk(20000);
-    // read_rate(argv[1], input);
-    index_t len_amp = 300;
+    auto input = random_risk(50000);
+    // read_rate("../data/fmd.acc.msa.fasta.rate", input);
+    index_t len_amp = 420;
     std::cout << "target length: " << input.size() << " bp" << std::endl;
     std::cout << "max amplicon length: " << len_amp << " bp" << std::endl;
     std::cout << "random seed: " << seed << std::endl;
@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
 
     std::cout << "Olivar greedy random optimizer" << std::endl;
     t1 = std::chrono::high_resolution_clock::now();
-    RiskOptimizer ro_(input, 40, len_amp / 10 * 9, len_amp);
+    RiskOptimizer ro_(input, 40, len_amp, len_amp);
     auto PDR_ = ro_.random_search(ITER_LIMIT * input.size() / len_amp);
     ro_.validate_PDR(PDR_);
     risk_t score_ = ro_.score(PDR_, ALPHA);
@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
     std::cout << "loss: " << score_ << ", ";
     std::cout << "time: " << time_ << " secs" << std::endl;
     std::cout << std::endl;
-    
+
     std::cout << "improvement: " << (int) ((score_ - score) / score_ * 100) << "%" << std::endl;
     return 0;
 }

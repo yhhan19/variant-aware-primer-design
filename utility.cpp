@@ -17,7 +17,6 @@ key_t to_key(index_t f, index_t r, index_t f_, index_t r_) {
 }
 
 key_t to_key_2(index_t r, index_t r_) {
-    assert(r > 0 && r_ > 0 && r_ < r && r - r_ < 420);
     return (key_t) r + ((key_t) (r - r_) << 16);
 }
 
