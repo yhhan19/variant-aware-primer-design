@@ -218,6 +218,19 @@ risk_t RiskOptimizer::top_k_opt_fast(risk_t u, std::vector<index_t> &min_PDR, ri
                     min_risk = temp.second;
                     min_key = to_key_2(r_, temp.first);
                 }
+                /*
+                for (auto elem : solution_vector[r_]) {
+                    index_t r__ = elem.first;
+                    if (r__min <= r__ && r__ <= r__max) {
+                        risk_t temp_risk = elem.second;
+                        key_t temp_key = to_key_2(r_, r__);
+                        if (temp_risk < min_risk) {
+                            min_risk = temp_risk;
+                            min_key = temp_key;
+                        }
+                    }
+                }
+                */
                 min_risk += cost(f, u, alpha) + cost(r, u, alpha);
             }
             solution_vector[r].push_back(std::make_pair(r_, min_risk));

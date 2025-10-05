@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
     srand(seed);
     auto input = random_risk(50000);
     // read_rate("../data/fmd.acc.msa.fasta.rate", input);
-    index_t len_amp = 420;
+    index_t len_amp = 800;
     std::cout << "target length: " << input.size() << " bp" << std::endl;
     std::cout << "max amplicon length: " << len_amp << " bp" << std::endl;
     std::cout << "random seed: " << seed << std::endl;

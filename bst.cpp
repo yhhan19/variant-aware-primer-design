@@ -41,15 +41,15 @@ void BST::update(BSTNode *root) {
     if (root->left != NULL) {
         root->lower = root->left->lower;
         if (root->left->min_key < root->min_key) {
-            root->min_key = root->left->key;
-            root->min_index = root->left->index;
+            root->min_key = root->left->min_key;
+            root->min_index = root->left->min_index;
         }
     }
     if (root->right != NULL) {
         root->upper = root->right->upper;
         if (root->right->min_key < root->min_key) {
-            root->min_key = root->right->key;
-            root->min_index = root->right->index;
+            root->min_key = root->right->min_key;
+            root->min_index = root->right->min_index;
         }
     }
 }
