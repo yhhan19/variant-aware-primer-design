@@ -18,7 +18,7 @@ BST::BST(std::vector<std::pair<index_t, risk_t>> &input) {
 BSTNode *BST::build_bst(std::vector<std::pair<index_t, risk_t>> &input, index_t left, index_t right) {
     index_t mid = ((std::size_t)left + right) / 2;
     BSTNode *root = new_node(input[mid].first, input[mid].second);
-    if (left <= mid - 1) root->left = build_bst(input, left, mid - 1);
+    if (left + 1 <= mid) root->left = build_bst(input, left, mid - 1);
     if (right >= mid + 1) root->right = build_bst(input, mid + 1, right);
     update(root);
     return root;

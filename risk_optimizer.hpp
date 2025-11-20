@@ -27,6 +27,10 @@ class RiskOptimizer {
         risk_t cost(index_t p, risk_t u, risk_t alpha);
         risk_t top_k_opt(risk_t u, std::vector<index_t> &min_PDR, risk_t alpha);
         risk_t top_k_opt_fast(risk_t u, std::vector<index_t> &min_PDR, risk_t alpha);
+        risk_t opt_m(index_t f, index_t r, risk_t u, risk_t alpha);
+        risk_t top_k_opt_m(risk_t u, std::vector<index_t> &min_PDR, risk_t alpha);
+        bool valid(index_t f, index_t r, index_t f_, index_t r_);
+        risk_t top_k_opt_mi(risk_t u, std::vector<index_t> &min_PDR, risk_t alpha);
 };
 
 #endif

@@ -49,3 +49,71 @@ std::size_t read_rate(std::string filename, std::vector<risk_t> &input) {
     fin.close();
     return 0;
 }
+
+std::size_t read_rate_2(std::string filename, std::vector<risk_t> &input, std::string &ref) {
+    std::ifstream fin(filename);
+    if (! fin.is_open()) {
+        std::cout << "file not open" << std::endl;
+        return -1;
+    }
+    input.clear();
+    std::string line;
+    std::vector<std::pair<index_t, risk_t>> temp;
+    index_t max = 0;
+    std::getline(fin, line);
+    while (std::getline(fin, line)) {
+        std::stringstream ss(line);
+        index_t i;
+        risk_t rate;
+        char comma, nc;
+        //    1    ,        A        ,        0.0     ,        0.0     ,        0.0     ,        0.0     ,        0.0
+        ss >> i >> comma >> nc >> comma >> rate >> comma >> rate >> comma >> rate >> comma >> rate >> comma >> rate;
+        temp.push_back(std::make_pair(i, rate));
+        ref += nc;
+        max = std::max(max, i);
+    }
+    for (index_t i = 0; i < max; i ++) 
+        input.push_back(0);
+    for (auto elem : temp) {
+        input[elem.first] = elem.second;
+    }
+    fin.close();
+    return 0;
+}
+
+std::size_t read_rate_ref(std::string filename, std::vector<risk_t> &input, std::string &ref) {
+    std::ifstream fin(filename);
+    if (! fin.is_open()) {
+        std::cout << "file not open" << std::endl;
+        return 1;
+    }
+    input.clear();
+    std::string line;
+    std::vector<std::pair<index_t, risk_t>> temp;
+    index_t max = 0;
+    std::getline(fin, line);
+    while (std::getline(fin, line)) {
+        std::stringstream ss(line);
+        index_t i;
+        risk_t rate;
+        char comma, nc;
+        ss >> i >> comma >> nc >> comma >> rate;
+        temp.push_back(std::make_pair(i, rate));
+        ref += nc;
+        max = std::max(max, i);
+    }
+    for (index_t i = 0; i < max; i ++) 
+        input.push_back(0);
+    for (auto elem : temp) {
+        input[elem.first] = elem.second;
+    }
+    fin.close();
+    return 0;
+}
+
+std::string display_PDR(std::vector<index_t> PDR) {
+    std::string PDRs = "";
+    for (index_t i = 0; i < PDR.size(); i ++) 
+        PDRs += std::to_string(PDR[i]) + " ";
+    return PDRs;
+}
