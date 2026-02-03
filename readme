@@ -1,1 +1,33 @@
-This GitHub repository includes the experimental data and the core optimization code for Δ-pro. We are currently refining the user interface, which will be released in an upcoming update.
+# ∆-PRO (Delta-PRO): Risk & Dimer Optimization for Multiplex PCR Design
+
+This repository contains a C++ command-line tool for optimizing primer design regions (PDRs) and solving a primer–primer dimer minimization subproblem.
+
+From the provided `main.cpp`, the program supports two families of workflows:
+
+- **Risk optimization**: select PDRs to minimize a risk/loss objective under amplicon-length constraints.
+  - `risk-d1`: DP-based relaxed convex optimizer (strategy s1)
+  - `risk-d2`: DP-based relaxed convex optimizer (strategy s2, with a min/max amplicon length range)
+  - `risk-h`: greedy/random heuristic (Olivar-style)
+- **Dimer minimization**:
+  - `dimer-h`: fast solver on a k-partite graph formulation
+
+---
+
+## Project layout (inferred)
+
+- `utility.hpp`  
+  I/O helpers (e.g., `read_rate_ref`), formatting (e.g., `display_PDR`), constants/types.
+- `risk_optimizer.hpp`  
+  `RiskOptimizer` implementation: DP-based relaxed convex search + heuristic search, scoring, validation.
+- `graph.hpp`  
+  `KPartiteGraph` implementation and fast solver for dimer selection.
+
+---
+
+## Build
+
+You can compile with any C++17-capable compiler.
+
+### Minimal (single binary)
+```bash
+g++ -O3 -std=c++17 -o delta-pro *.cpp
