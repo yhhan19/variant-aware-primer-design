@@ -11,23 +11,9 @@ From the provided `main.cpp`, the program supports two families of workflows:
 - **Dimer minimization**:
   - `dimer-h`: fast solver on a k-partite graph formulation
 
----
-
-## Project layout (inferred)
-
-- `utility.hpp`  
-  I/O helpers (e.g., `read_rate_ref`), formatting (e.g., `display_PDR`), constants/types.
-- `risk_optimizer.hpp`  
-  `RiskOptimizer` implementation: DP-based relaxed convex search + heuristic search, scoring, validation.
-- `graph.hpp`  
-  `KPartiteGraph` implementation and fast solver for dimer selection.
-
----
-
 ## Build
 
 You can compile with any C++17-capable compiler.
 
-### Minimal (single binary)
 ```bash
 g++ -O3 -std=c++17 -o delta-pro *.cpp
