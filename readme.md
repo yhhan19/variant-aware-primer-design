@@ -17,6 +17,7 @@ You can compile with any C++17-capable compiler.
 
 ```bash
 g++ -O3 -std=c++17 -o delta-pro *.cpp
+```
 
 ## Usage
 
